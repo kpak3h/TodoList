@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  margin: 0;
+  min-width: 250px;
+  font-family: Arial, sans-serif;
+  background-color: #fcfdfc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul li {
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  list-style-type: none;
+  font-size: 18px;
+  transition: 0.2s;
+  color: #000;
+}
+
+ul li:hover {
+  background: #ddd;
+}
+
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+.close {
+  position: absolute;
+  right: 40px;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+  color: #fff;
+  background-color: #f44336;
+}
+
+.close:hover {
+  background-color: #f00;
+}
+
+.header {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  color: white;
+  text-align: center;
+}
+
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+input {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
+}
+
+.addBtn {
+  padding: 10px;
+  width: 25%;
+  background: #0037b4;
+  color: white;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+  border: 2px solid #0037b4; /* Цвет обводки */
+  outline: none; /* Убирает обводку фокуса по умолчанию */
+}
+
+}
+
+.addBtn:hover {
+  background-color: #0a029d;
+}
+
+.bottomBtns {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 40px;
+  background-color: #fcfdfc;
+}
+
+.bottomBtns button {
+  padding: 10px;
+  background: #0037b4;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+  flex-grow: 1;
+  margin-right: 10px;
+  border: none;
+  outline: none;
+}
+
+.bottomBtns button:last-child {
+  margin-right: 0;
+}
+
+#myInput {
+  border: 2px solid #0037b4; /* Цвет обводки */
+  padding: 10px;
+  font-size: 16px;
+  outline: none; /* Убирает обводку фокуса по умолчанию */
+}
+
+</style>
+</head>
+<body>
+
+<div id="myDIV" class="header">
+  <div id="logoContainer">
+    <img src="space.png" alt="Логотип" width="500">
+  </div>
+  <input type="text" id="myInput" placeholder="Ввод...">
+  <span onclick="newElement()" class="addBtn">Добавить</span>
+</div>
+
+
+<ul id="myUL">
+
+</ul>
+
+<div class="bottomBtns">
+  <button id="highlightEven">Выделить четные</button>
+  <button id="highlightOdd">Выделить нечетные</button>
+  <button id="removeLast">Удалить последнюю</button>
+  <button id="removeFirst">Удалить первую</button>
+  <button id="completeTask">Выполнить</button>
+  <button id="deleteTask">Удалить задачу</button>
+</div>
+
+<script>
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+}
+
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
+
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
+
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+  }
+  document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const taskInput = document.getElementById('myInput');
+    const addTaskButton = document.getElementsByClassName('addBtn')[0];
+    const taskList = document.getElementById('myUL');
+    const highlightEvenButton = document.getElementById('highlightEven');
+    const highlightOddButton = document.getElementById('highlightOdd');
+    const removeLastButton = document.getElementById('removeLast');
+    const removeFirstButton = document.getElementById('removeFirst');
+    const completeTaskButton = document.getElementById('completeTask');
+    const deleteTaskButton = document.getElementById('deleteTask');
+
+    function saveTasksToLocalStorage() {
+        const tasks = Array.from(taskList.children).map(task => task.textContent);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function loadTasksFromLocalStorage() {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        for (const taskText of tasks) {
+            const taskItem = document.createElement('li');
+            taskItem.textContent = taskText;
+            taskList.appendChild(taskItem);
+        }
+    }
+
+    loadTasksFromLocalStorage();
+
+    highlightEvenButton.addEventListener('click', function() {
+        const taskItems = taskList.children;
+        for (let i = 0; i < taskItems.length; i++) {
+            if (i % 2 === 1) {
+                taskItems[i].classList.toggle('checked');
+            }
+        }
+    });
+
+    highlightOddButton.addEventListener('click', function() {
+        const taskItems = taskList.children;
+        for (let i = 0; i < taskItems.length; i++) {
+            if (i % 2 === 0) {
+                taskItems[i].classList.toggle('checked');
+            }
+        }
+    });
+
+    removeLastButton.addEventListener('click', function() {
+        const lastTask = taskList.lastElementChild;
+        if (lastTask) {
+            taskList.removeChild(lastTask);
+            saveTasksToLocalStorage();
+        }
+    });
+
+    removeFirstButton.addEventListener('click', function() {
+        const firstTask = taskList.firstElementChild;
+        if (firstTask) {
+            taskList.removeChild(firstTask);
+            saveTasksToLocalStorage();
+        }
+    });
+
+    completeTaskButton.addEventListener('click', function() {
+        const taskItems = taskList.children;
+        for (let i = 0; i < taskItems.length; i++) {
+            if (!taskItems[i].classList.contains('checked')) {
+                taskItems[i].classList.add('checked');
+                taskList.appendChild(taskItems[i]);
+                saveTasksToLocalStorage();
+                break;
+            }
+        }
+    });
+
+    deleteTaskButton.addEventListener('click', function() {
+        const taskItems = taskList.children;
+        for (let i = 0; i < taskItems.length; i++) {
+            if (taskItems[i].classList.contains('checked')) {
+                taskList.removeChild(taskItems[i]);
+                saveTasksToLocalStorage();
+                break;
+            }
+        }
+    });
+
+    addTaskButton.addEventListener('click', function() {
+        const taskText = taskInput.value.trim();
+        if (taskText) {
+            const taskItem = document.createElement('li');
+            taskItem.textContent = taskText;
+            taskList.appendChild(taskItem);
+            taskInput.value = '';
+            saveTasksToLocalStorage();
+        }
+    });
+});
+</script>
+
+</body>
+</html>
